@@ -1,5 +1,6 @@
 import { ClassSession } from "@/types";
 import { Clock, MapPin, User, BookOpen } from "lucide-react";
+import { getSubjectName } from "@/lib/utils";
 
 interface ClassDetailsProps {
   session: ClassSession | null;
@@ -27,7 +28,7 @@ export function ClassDetails({ session }: ClassDetailsProps) {
             <BookOpen className="w-4 h-4" /> Subject
           </p>
           <h2 className="text-4xl sm:text-5xl font-extrabold leading-tight text-foreground">
-            {session.subject}
+            {getSubjectName(session.subject)}
           </h2>
         </div>
 
