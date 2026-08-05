@@ -7,7 +7,7 @@ export function Header() {
   const dateFormatted = format(today, "MMMM d, yyyy");
 
   return (
-    <header className="mb-8 flex flex-col sm:flex-row sm:items-end justify-between border-b border-card-border pb-4">
+    <header className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between border-b border-card-border pb-4 pt-4 px-6 bg-white shadow-sm rounded-xl">
       <div>
         <h1 className="text-3xl font-extrabold tracking-tight text-accent flex items-center gap-2">
           <Calendar className="w-8 h-8" />

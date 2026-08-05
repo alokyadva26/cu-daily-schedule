@@ -166,7 +166,7 @@ export default function Home() {
                       setViewState("weekend"); // Triggers re-evaluation of current day
                       setCurrentTime(new Date()); // force re-eval
                     }}
-                    className="text-sm font-medium text-foreground/60 hover:text-foreground underline decoration-dashed"
+                    className="text-sm font-medium text-secondary hover:text-foreground underline decoration-dashed"
                   >
                     Back to Today
                   </button>
@@ -182,7 +182,7 @@ export default function Home() {
                     />
                   ))
                 ) : (
-                  <div className="glass rounded-2xl p-8 text-center text-foreground/60">
+                  <div className="cuims-card p-8 text-center text-secondary">
                     No classes scheduled for tomorrow! 🎉
                   </div>
                 )}
@@ -191,7 +191,7 @@ export default function Home() {
 
             {viewState !== "tomorrow" && todayClasses.length > 0 && (
               <div className="flex flex-col gap-4">
-                <h2 className="text-xl font-bold px-1 flex items-center gap-2">
+                <h2 className="text-xl font-bold px-1 flex items-center gap-2 text-foreground">
                   📅 Today's Schedule
                 </h2>
                 <div className="flex flex-col gap-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">

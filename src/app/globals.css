@@ -1,30 +1,19 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f1f5f9; /* Slate 100 */
-  --foreground: #0f172a; /* Slate 900 */
-  --card-bg: rgba(255, 255, 255, 0.7);
-  --card-border: rgba(255, 255, 255, 0.5);
-  --accent: #3b82f6; /* Blue 500 */
-  --accent-foreground: #ffffff;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f172a; /* Slate 900 */
-    --foreground: #f1f5f9; /* Slate 100 */
-    --card-bg: rgba(30, 41, 59, 0.7); /* Slate 800 with opacity */
-    --card-border: rgba(255, 255, 255, 0.1);
-    --accent: #3b82f6; /* Blue 500 */
-    --accent-foreground: #ffffff;
-  }
+  --background: #F5F6F8;
+  --foreground: #1F2937;
+  --card-bg: #FFFFFF;
+  --card-border: #E5E7EB;
+  --accent: #E30613; /* Primary Red */
+  --accent-foreground: #FFFFFF;
+  --secondary: #6B7280;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   min-height: 100vh;
-  font-family: var(--font-sans), sans-serif;
 }
 
 @theme inline {
@@ -34,32 +23,12 @@ body {
   --color-card-border: var(--card-border);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-secondary: var(--secondary);
 }
 
-@keyframes blob {
-  0% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
-  100% { transform: translate(0px, 0px) scale(1); }
-}
-
-.animate-blob {
-  animation: blob 7s infinite;
-}
-
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-
-.animation-delay-4000 {
-  animation-delay: 4s;
-}
-
-.glass {
+.cuims-card {
   background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--card-border);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border-radius: 0.75rem;
 }

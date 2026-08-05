@@ -6,12 +6,12 @@ interface EndOfDayStateProps {
 
 export function EndOfDayState({ onViewTomorrow }: EndOfDayStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[400px] glass rounded-3xl p-10 text-center shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="bg-emerald-500/10 p-6 rounded-full mb-6">
-        <PartyPopper className="w-16 h-16 text-emerald-500" />
+    <div className="flex flex-col items-center justify-center min-h-[400px] cuims-card p-10 text-center shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="bg-accent/10 p-6 rounded-full mb-6">
+        <PartyPopper className="w-16 h-16 text-accent" />
       </div>
-      <h2 className="text-3xl font-extrabold mb-3 tracking-tight">🎉 Classes are Over!</h2>
-      <p className="text-lg text-foreground/70 max-w-sm mx-auto mb-8">
+      <h2 className="text-3xl font-extrabold mb-3 tracking-tight text-foreground">🎉 Classes are Over!</h2>
+      <p className="text-lg text-secondary max-w-sm mx-auto mb-8">
         Have a great evening. <br />
         See you tomorrow.
       </p>
