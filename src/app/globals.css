@@ -1,13 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #F5F6F8;
-  --foreground: #1F2937;
+  --background: #F7F8FA;
+  --foreground: #111827;
   --card-bg: #FFFFFF;
   --card-border: #E5E7EB;
   --accent: #E30613; /* Primary Red */
   --accent-foreground: #FFFFFF;
   --secondary: #6B7280;
+  --timeline: #D1D5DB;
+  --active-bg: #FFF5F5;
 }
 
 body {
@@ -24,6 +26,8 @@ body {
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-secondary: var(--secondary);
+  --color-timeline: var(--timeline);
+  --color-active-bg: var(--active-bg);
 }
 
 .cuims-card {

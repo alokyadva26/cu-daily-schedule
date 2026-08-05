@@ -7,19 +7,27 @@ export function Header() {
   const dateFormatted = format(today, "MMMM d, yyyy");
 
   return (
-    <header className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between border-b border-card-border pb-4 pt-4 px-6 bg-white shadow-sm rounded-xl">
-      <div>
-        <h1 className="text-3xl font-extrabold tracking-tight flex items-center gap-2">
-          <Calendar className="w-8 h-8 text-accent" />
-          <span>
-            <span className="text-accent">CU Daily</span> <span className="text-black">Schedule</span>
-          </span>
-        </h1>
-        <p className="text-foreground/70 mt-1">Manage your daily classes effortlessly</p>
+    <header className="mb-8 flex flex-col md:flex-row md:items-center justify-between p-8 bg-white shadow-sm rounded-3xl cuims-card">
+      <div className="flex items-center gap-5">
+        <div className="bg-accent text-white p-3.5 rounded-xl shadow-md">
+          <Calendar className="w-8 h-8" strokeWidth={2.5} />
+        </div>
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-accent">
+            CU Daily Schedule
+          </h1>
+          <p className="text-secondary font-medium text-[15px] mt-0.5">Manage your daily classes effortlessly</p>
+        </div>
       </div>
-      <div className="mt-4 sm:mt-0 text-left sm:text-right">
-        <p className="text-2xl font-bold">{dayName}</p>
-        <p className="text-foreground/60">{dateFormatted}</p>
+      
+      <div className="mt-6 md:mt-0 flex items-center justify-end gap-4">
+        <div className="bg-accent/10 p-3 rounded-full text-accent hidden md:block">
+          <Calendar className="w-6 h-6" />
+        </div>
+        <div className="text-left md:text-right">
+          <p className="text-xl font-bold text-foreground">{dayName}</p>
+          <p className="text-accent font-semibold text-sm mt-0.5">{dateFormatted}</p>
+        </div>
       </div>
     </header>
   );

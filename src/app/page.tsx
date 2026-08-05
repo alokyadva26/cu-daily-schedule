@@ -9,7 +9,9 @@ import { ScheduleCard } from "@/components/ScheduleCard";
 import { ClassDetails } from "@/components/ClassDetails";
 import { EmptyState } from "@/components/EmptyState";
 import { EndOfDayState } from "@/components/EndOfDayState";
+import { BottomCard } from "@/components/BottomCard";
 import { parseTime, getCountdownString } from "@/lib/utils";
+import { Calendar } from "lucide-react";
 
 type EnrichedSession = ClassSession & {
   mode: "normal" | "active" | "next";
@@ -140,9 +142,9 @@ export default function Home() {
       {viewState === "weekend" ? (
         <EmptyState />
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 mt-6">
           {/* LEFT SIDE */}
-          <section className="order-2 lg:order-1 flex flex-col gap-4">
+          <section className="order-2 lg:order-1 lg:col-span-7 flex flex-col gap-4">
             
             {viewState === "end-of-day" && (
               <EndOfDayState 
@@ -190,11 +192,12 @@ export default function Home() {
             )}
 
             {viewState !== "tomorrow" && todayClasses.length > 0 && (
-              <div className="flex flex-col gap-4">
-                <h2 className="text-xl font-bold px-1 flex items-center gap-2 text-foreground">
-                  📅 Today's Schedule
+              <div className="flex flex-col gap-6">
+                <h2 className="text-[22px] font-extrabold px-1 flex items-center gap-3 text-foreground">
+                  <Calendar className="w-6 h-6 text-accent" strokeWidth={2.5} />
+                  Today's Schedule
                 </h2>
-                <div className="flex flex-col gap-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
+                <div className="flex flex-col gap-5 max-h-[700px] overflow-y-auto pr-2 custom-scrollbar pl-1 pt-1">
                   {todayClasses.map((session, idx) => {
                     const start = parseTime(session.startTime, currentTime);
                     const end = parseTime(session.endTime, currentTime);
@@ -219,6 +222,7 @@ export default function Home() {
                         onClick={() => setSelectedSession(session)}
                         mode={mode}
                         countdown={countdown}
+                        isLast={idx === todayClasses.length - 1}
                       />
                     );
                   })}
@@ -229,10 +233,14 @@ export default function Home() {
           </section>
 
           {/* RIGHT SIDE */}
-          <section className="order-1 lg:order-2">
-            {(viewState !== "end-of-day" || selectedSession) && (
-              <ClassDetails session={selectedSession} />
-            )}
+          <section className="order-1 lg:order-2 lg:col-span-5 flex flex-col h-full">
+            <div className="flex-1">
+              {(viewState !== "end-of-day" || selectedSession) && (
+                <ClassDetails session={selectedSession} />
+              )}
+            </div>
+            
+            <BottomCard />
           </section>
         </div>
       )}
