@@ -155,20 +155,7 @@ export default function Home() {
               />
             )}
 
-            {(viewState === "active" || viewState === "next") && displaySession && (
-              <>
-                <h2 className="text-xl font-bold mb-2 px-1">
-                  {viewState === "active" ? "Current Class" : "Next Class"}
-                </h2>
-                <ScheduleCard
-                  session={displaySession}
-                  isSelected={true} // It's always selected in this view since it's the only one
-                  onClick={() => setSelectedSession(displaySession)}
-                  mode={displaySession.mode}
-                  countdown={displaySession.countdown}
-                />
-              </>
-            )}
+
 
             {viewState === "tomorrow" && (
               <>
@@ -203,8 +190,8 @@ export default function Home() {
             )}
 
             {viewState !== "tomorrow" && todayClasses.length > 0 && (
-              <div className="mt-6 border-t border-white/10 pt-6">
-                <h2 className="text-xl font-bold mb-4 px-1 flex items-center gap-2">
+              <div className="flex flex-col gap-4">
+                <h2 className="text-xl font-bold px-1 flex items-center gap-2">
                   📅 Today's Schedule
                 </h2>
                 <div className="flex flex-col gap-4 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">

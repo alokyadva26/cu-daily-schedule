@@ -1,6 +1,6 @@
 import { ClassSession } from "@/types";
 import { cn, getSubjectName } from "@/lib/utils";
-import { Clock, MapPin, BookOpen, PlayCircle, FastForward } from "lucide-react";
+import { Clock, MapPin, BookOpen, PlayCircle, FastForward, User } from "lucide-react";
 
 interface ScheduleCardProps {
   session: ClassSession;
@@ -55,10 +55,15 @@ export function ScheduleCard({ session, isSelected, onClick, mode = "normal", co
         </div>
       </div>
       
-      <h3 className="text-lg font-bold mb-2 flex items-start gap-2 pr-20">
+      <h3 className="text-lg font-bold mb-1 flex items-start gap-2 pr-20">
         <BookOpen className="w-5 h-5 mt-0.5 text-foreground/60 shrink-0" />
         <span className="leading-tight">{getSubjectName(session.subject)}</span>
       </h3>
+      
+      <div className="flex items-center text-foreground/80 font-medium mb-3 pl-7 text-sm">
+        <User className="w-4 h-4 mr-2 text-blue-400 shrink-0" />
+        {session.faculty}
+      </div>
       
       <div className="flex justify-between items-end mt-3">
         <div className="flex items-center text-foreground/70 font-medium">
