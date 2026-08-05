@@ -6,22 +6,25 @@ interface ScheduleCardProps {
   session: ClassSession;
   isSelected: boolean;
   onClick: () => void;
-  mode?: "normal" | "active" | "next";
+  mode?: "normal" | "active" | "next" | "completed";
   countdown?: string;
 }
 
 export function ScheduleCard({ session, isSelected, onClick, mode = "normal", countdown }: ScheduleCardProps) {
   const isActive = mode === "active";
   const isNext = mode === "next";
+  const isCompleted = mode === "completed";
 
   return (
     <div
       onClick={onClick}
       className={cn(
-        "glass rounded-2xl p-5 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl relative overflow-hidden",
+        "glass rounded-2xl p-5 cursor-pointer transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden",
         isSelected 
-          ? isActive ? "ring-2 ring-emerald-500 shadow-lg bg-emerald-500/5 dark:bg-emerald-500/10" : "ring-2 ring-accent shadow-lg bg-accent/5 dark:bg-accent/10" 
-          : "hover:bg-foreground/5 shadow-md"
+          ? isActive ? "ring-2 ring-emerald-500 bg-emerald-500/5 dark:bg-emerald-500/10" : "ring-2 ring-accent shadow-lg bg-accent/5 dark:bg-accent/10" 
+          : "hover:bg-foreground/5 shadow-md",
+        isActive && "border-l-4 border-l-emerald-500 scale-[1.02] shadow-[0_0_15px_rgba(16,185,129,0.2)]",
+        isCompleted && "opacity-60"
       )}
     >
       {isActive && (
@@ -33,6 +36,12 @@ export function ScheduleCard({ session, isSelected, onClick, mode = "normal", co
       {isNext && (
         <div className="absolute top-0 right-0 bg-accent text-white text-xs font-bold px-3 py-1 rounded-bl-lg flex items-center shadow-md">
           <FastForward className="w-3 h-3 mr-1" /> NEXT CLASS
+        </div>
+      )}
+
+      {isCompleted && (
+        <div className="absolute top-0 right-0 bg-foreground/20 text-foreground text-xs font-bold px-3 py-1 rounded-bl-lg flex items-center shadow-sm">
+          <span className="mr-1">✓</span> COMPLETED
         </div>
       )}
 
