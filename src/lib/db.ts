@@ -1,4 +1,4 @@
-import { supabase } from './supabase';
+import { getSupabase } from './supabase';
 
 export interface DatabaseScheduleEntry {
   id: string;
@@ -24,6 +24,7 @@ export interface TeacherData {
 }
 
 export async function getTeacherByEmployeeId(employeeId: string): Promise<TeacherData | null> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('teachers')
     .select('*')
@@ -38,6 +39,7 @@ export async function getTeacherByEmployeeId(employeeId: string): Promise<Teache
 }
 
 export async function getTimetableEntries(timetableId: string): Promise<DatabaseScheduleEntry[]> {
+  const supabase = getSupabase();
   const { data, error } = await supabase
     .from('schedule_entries')
     .select('*')
