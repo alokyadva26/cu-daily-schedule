@@ -70,7 +70,7 @@ export function TeacherScheduleCard({ entry, mode = "normal", isLast }: TeacherS
             )}
 
             <div className="flex justify-between items-start">
-              <h3 className="text-[15px] md:text-[17px] font-black text-[#1a2b4c] mb-1 leading-tight pr-4">
+              <h3 className="text-[15px] md:text-[18px] font-black text-[#1a2b4c] mb-1 leading-tight pr-4">
                 {entry.course_name}
               </h3>
             </div>
@@ -79,15 +79,15 @@ export function TeacherScheduleCard({ entry, mode = "normal", isLast }: TeacherS
               {entry.course_code} • {entry.course_type}
             </div>
             
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-[#868e96] text-[12px] md:text-[13px] font-medium">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-[#868e96] text-[12px] font-medium">
               <div className="flex items-center">
                 <MapPin className="w-3.5 h-3.5 mr-1.5 shrink-0" />
-                <span className="truncate">Block-{entry.block_no} / {entry.room_no}</span>
+                <span className="truncate">{entry.block_no.includes('Block') ? entry.block_no : `Block-${entry.block_no}`} / {entry.room_no}</span>
               </div>
               
               {entry.student_group && entry.student_group !== 'empty' && (
                 <>
-                  <div className="w-[1px] h-3 bg-slate-300 hidden sm:block"></div>
+                  <div className="text-slate-300">|</div>
                   <div className="flex items-center">
                     <Users className="w-3.5 h-3.5 mr-1.5 shrink-0" />
                     <span className="truncate">Group {entry.student_group}</span>
@@ -95,7 +95,7 @@ export function TeacherScheduleCard({ entry, mode = "normal", isLast }: TeacherS
                 </>
               )}
               
-              <div className="w-[1px] h-3 bg-slate-300 hidden sm:block"></div>
+              <div className="text-slate-300">|</div>
               <div className="flex items-center">
                 <Hash className="w-3.5 h-3.5 mr-1.5 shrink-0" />
                 <span className="truncate">{entry.section}</span>

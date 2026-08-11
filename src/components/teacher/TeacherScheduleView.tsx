@@ -80,10 +80,82 @@ export default function TeacherScheduleView({ entries, teacherName, teacherId }:
     const isCurrent = !!currentClass;
 
     return (
-      <div className="flex flex-col h-full gap-4">
-        {/* Countdown Card */}
-        <div className="bg-white border border-slate-200 rounded-[24px] p-8 shadow-[0_2px_12px_rgb(0,0,0,0.02)] text-center flex flex-col items-center">
-          <div className="flex items-center gap-3 mb-6">
+      <div className="bg-white border border-slate-200 rounded-[24px] shadow-[0_2px_12px_rgb(0,0,0,0.02)] flex flex-col h-full overflow-hidden">
+        {/* TOP SECTION: Class Details */}
+        <div className="p-8 flex-1 flex flex-col">
+          <div className="flex items-center gap-3 mb-4">
+            <BookOpen className="w-5 h-5 text-[#d32f2f]" />
+            <span className="text-[#868e96] font-black text-[13px] tracking-widest uppercase">
+              {isCurrent ? 'CURRENT CLASS' : 'NEXT CLASS'}
+            </span>
+          </div>
+          <h3 className="text-[26px] font-black text-[#1a2b4c] mb-3 leading-tight tracking-tight">{activeOrNext.course_name}</h3>
+          <div className="mb-8">
+            <span className="inline-flex items-center px-3 py-1 bg-[#fff5f5] text-[#d32f2f] text-xs font-bold rounded-[8px]">
+              {activeOrNext.course_code} • {activeOrNext.course_type}
+            </span>
+          </div>
+          
+          <div className="flex-1 flex flex-col text-[14px]">
+            {/* Faculty Row */}
+            <div className="flex justify-between items-center py-4 border-t border-slate-100">
+              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
+                <UserIcon className="w-4 h-4" /> Faculty
+              </div>
+              <span className="font-bold text-[#1a2b4c] text-right">
+                {teacherName ? `${teacherName} (${teacherId})` : 'Loading...'}
+              </span>
+            </div>
+
+            {/* Classroom Row */}
+            <div className="flex justify-between items-center py-4 border-t border-slate-100">
+              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
+                <MapPin className="w-4 h-4" /> Classroom
+              </div>
+              <span className="font-bold text-[#d32f2f] bg-[#fff5f5] px-2 py-0.5 rounded text-right">
+                {/* Fallback to Block- if it doesn't already contain it */}
+                {activeOrNext.block_no.includes('Block') ? activeOrNext.block_no : `Block-${activeOrNext.block_no}`} / {activeOrNext.room_no}
+              </span>
+            </div>
+            
+            {/* Group Row */}
+            <div className="flex justify-between items-center py-4 border-t border-slate-100">
+              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
+                <Users className="w-4 h-4" /> Group
+              </div>
+              <span className="font-bold text-[#1a2b4c] text-right">
+                {activeOrNext.student_group === 'empty' ? activeOrNext.section : `Group ${activeOrNext.student_group}`}
+              </span>
+            </div>
+
+            {/* Section Row */}
+            <div className="flex justify-between items-center py-4 border-t border-slate-100">
+              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
+                <Hash className="w-4 h-4" /> Section
+              </div>
+              <span className="font-bold text-[#1a2b4c] text-right">
+                {activeOrNext.section}
+              </span>
+            </div>
+            
+            {/* Time Row */}
+            <div className="flex justify-between items-center py-4 border-t border-slate-100">
+              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
+                <Clock className="w-4 h-4" /> Time
+              </div>
+              <span className="font-bold text-[#1a2b4c] text-right">
+                {activeOrNext.start_time} - {activeOrNext.end_time}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* SUBTLE DIVIDER */}
+        <div className="border-t border-slate-200 border-dashed border-2"></div>
+
+        {/* BOTTOM SECTION: Countdown */}
+        <div className="p-8 bg-slate-50/50 flex flex-col items-center">
+          <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 bg-[#fff5f5] rounded-full flex items-center justify-center text-[#d32f2f]">
               <Clock className="w-6 h-6" />
             </div>
@@ -99,84 +171,9 @@ export default function TeacherScheduleView({ entries, teacherName, teacherId }:
             <span className="text-xl font-bold text-[#868e96]">{formattedTime.label2}</span>
           </div>
           
-          <p className="text-[#868e96] text-sm font-medium mt-4">
+          <p className="text-[#868e96] text-[13px] font-medium mt-3">
             {isCurrent ? 'Class is currently in progress' : 'Get ready for your next class'}
           </p>
-        </div>
-
-        {/* Class Details Card */}
-        <div className="bg-white border border-slate-200 rounded-[24px] shadow-[0_2px_12px_rgb(0,0,0,0.02)] flex-1 flex flex-col">
-          <div className="p-6 border-b border-slate-100 border-dashed">
-            <div className="flex items-center gap-3 mb-4">
-              <BookOpen className="w-5 h-5 text-[#d32f2f]" />
-              <span className="text-[#1a2b4c] font-black text-[13px] tracking-widest uppercase">
-                {isCurrent ? 'CURRENT CLASS' : 'NEXT CLASS'}
-              </span>
-            </div>
-            <h3 className="text-2xl font-black text-[#1a2b4c] mb-3 leading-tight">{activeOrNext.course_name}</h3>
-            <span className="inline-flex items-center px-3 py-1 bg-[#fff5f5] text-[#d32f2f] text-xs font-bold rounded-[8px] border border-[#d32f2f]/10">
-              {activeOrNext.course_code} • {activeOrNext.course_type}
-            </span>
-          </div>
-          
-          <div className="flex-1 flex flex-col text-[13px]">
-            {/* Faculty Row */}
-            <div className="flex justify-between items-center px-6 py-4 border-b border-slate-100">
-              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
-                <UserIcon className="w-4 h-4" /> Faculty
-              </div>
-              <span className="font-bold text-[#1a2b4c] text-right">
-                {teacherName ? `${teacherName} (${teacherId})` : 'Loading...'}
-              </span>
-            </div>
-
-            {/* Classroom Row */}
-            <div className="flex justify-between items-center px-6 py-4 border-b border-slate-100">
-              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
-                <MapPin className="w-4 h-4" /> Classroom
-              </div>
-              <span className="font-bold text-[#d32f2f] bg-[#fff5f5] px-2 py-0.5 rounded text-right">
-                Block-{activeOrNext.block_no} / {activeOrNext.room_no}
-              </span>
-            </div>
-            
-            {/* Group Row */}
-            <div className="flex justify-between items-center px-6 py-4 border-b border-slate-100">
-              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
-                <Users className="w-4 h-4" /> Group
-              </div>
-              <span className="font-bold text-[#1a2b4c] text-right">
-                {activeOrNext.student_group === 'empty' ? activeOrNext.section : `Group ${activeOrNext.student_group}`}
-              </span>
-            </div>
-            
-            {/* Time Row */}
-            <div className="flex justify-between items-center px-6 py-4">
-              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
-                <Clock className="w-4 h-4" /> Time
-              </div>
-              <span className="font-bold text-[#1a2b4c] text-right">
-                {activeOrNext.start_time} - {activeOrNext.end_time}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Footer Card */}
-        <div className="bg-white border border-slate-200 rounded-[16px] p-4 flex items-center justify-between shadow-sm">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-[#fff5f5] flex items-center justify-center text-[#d32f2f]">
-              <AlertCircle className="w-4 h-4" />
-            </div>
-            <div>
-              <div className="text-[13px] font-bold text-[#1a2b4c]">Schedule updates automatically</div>
-              <div className="text-[11px] font-medium text-[#868e96]">Last updated: {now?.toLocaleTimeString()}</div>
-            </div>
-          </div>
-          <button onClick={() => window.location.reload()} className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-[8px] text-[12px] font-bold text-[#d32f2f] hover:bg-slate-50 transition-colors">
-            <RefreshCw className="w-3.5 h-3.5" />
-            Refresh
-          </button>
         </div>
       </div>
     );
