@@ -97,19 +97,26 @@ export function getScheduleStatus(entries: DatabaseScheduleEntry[], currentTime:
   return { status: "completed", currentClass: null, nextClass: null, remainingSeconds: 0, isFinished: true };
 }
 
+export type FormattedTime = {
+  unit1: number;
+  label1: string;
+  unit2: number;
+  label2: string;
+};
+
 /**
- * Formats seconds into "MM min SS sec" or "X hr Y min"
+ * Formats seconds into { unit1, label1, unit2, label2 } for custom styling
  */
-export function formatRemainingTime(remainingSeconds: number): string {
-  if (remainingSeconds <= 0) return '0 min 0 sec';
+export function formatRemainingTime(remainingSeconds: number): FormattedTime {
+  if (remainingSeconds <= 0) return { unit1: 0, label1: 'min', unit2: 0, label2: 'sec' };
   
   if (remainingSeconds >= 3600) {
     const hours = Math.floor(remainingSeconds / 3600);
     const minutes = Math.floor((remainingSeconds % 3600) / 60);
-    return `${hours} hr ${minutes} min`;
+    return { unit1: hours, label1: 'hr', unit2: minutes, label2: 'min' };
   }
   
   const minutes = Math.floor(remainingSeconds / 60);
   const seconds = remainingSeconds % 60;
-  return `${minutes} min ${seconds} sec`;
+  return { unit1: minutes, label1: 'min', unit2: seconds, label2: 'sec' };
 }

@@ -1,15 +1,14 @@
 import { DatabaseScheduleEntry } from "@/lib/db";
 import { cn } from "@/lib/utils";
-import { BookOpen, MapPin, Users, Hash, ChevronRight } from "lucide-react";
+import { BookOpen, MapPin, Users, Hash, ChevronRight, Check } from "lucide-react";
 
 interface TeacherScheduleCardProps {
   entry: DatabaseScheduleEntry;
   mode?: "normal" | "active" | "next" | "completed";
-  countdown?: string;
   isLast?: boolean;
 }
 
-export function TeacherScheduleCard({ entry, mode = "normal", countdown, isLast }: TeacherScheduleCardProps) {
+export function TeacherScheduleCard({ entry, mode = "normal", isLast }: TeacherScheduleCardProps) {
   const isActive = mode === "active";
   const isCompleted = mode === "completed";
   const isNext = mode === "next";
@@ -25,7 +24,7 @@ export function TeacherScheduleCard({ entry, mode = "normal", countdown, isLast 
         
         {/* Vertical Line */}
         {!isLast && (
-          <div className="absolute top-[24px] bottom-[-48px] right-[7px] md:right-auto w-0.5 bg-slate-200 z-0"></div>
+          <div className="absolute top-[24px] bottom-[-48px] right-[7px] md:right-auto w-0.5 bg-slate-200 z-0 hidden md:block"></div>
         )}
 
         {/* Time Text */}
@@ -36,9 +35,11 @@ export function TeacherScheduleCard({ entry, mode = "normal", countdown, isLast 
 
         {/* Timeline Node */}
         <div className={cn(
-          "absolute right-[-1px] md:right-auto top-[6px] md:top-[8px] z-10 w-4 h-4 rounded-full flex items-center justify-center border-2 bg-white",
-          isHighlighted ? "border-[#d32f2f] bg-[#d32f2f]" : "border-slate-300"
-        )}></div>
+          "absolute right-[-1px] md:right-auto top-[6px] md:top-[8px] z-10 w-5 h-5 rounded-full flex items-center justify-center border-[2.5px] bg-white shadow-sm hidden md:flex",
+          isHighlighted ? "border-[#d32f2f] bg-[#d32f2f]" : isCompleted ? "border-[#28a745] bg-[#28a745]" : "border-slate-300"
+        )}>
+          {isCompleted && <Check className="w-3 h-3 text-white stroke-[3]" />}
+        </div>
       </div>
 
       {/* CARD CONTENT */}
@@ -72,7 +73,6 @@ export function TeacherScheduleCard({ entry, mode = "normal", countdown, isLast 
               <h3 className="text-[15px] md:text-[17px] font-black text-[#1a2b4c] mb-1 leading-tight pr-4">
                 {entry.course_name}
               </h3>
-              <ChevronRight className="w-5 h-5 text-slate-300 shrink-0 mt-0.5" />
             </div>
             
             <div className="text-[12px] md:text-[13px] font-bold text-[#d32f2f] mb-4">
@@ -103,18 +103,6 @@ export function TeacherScheduleCard({ entry, mode = "normal", countdown, isLast 
             </div>
           </div>
         </div>
-
-        {/* Countdown Footer */}
-        {(isActive || isNext) && countdown && (
-          <div className="px-5 md:px-6 py-3 border-t border-slate-100 flex justify-between items-center bg-slate-50/50 rounded-b-[16px]">
-            <span className="text-[11px] font-bold text-[#868e96] uppercase tracking-wider">
-              {isActive ? 'ENDS IN' : 'STARTS IN'}
-            </span>
-            <span className="font-black text-[13px] text-[#1a2b4c]">
-              {countdown}
-            </span>
-          </div>
-        )}
       </div>
       
     </div>
