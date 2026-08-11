@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { DatabaseScheduleEntry } from '@/lib/db';
-import { getScheduleStatus, getTimeRemaining, parseTime } from '@/lib/teacherSchedule';
+import { getScheduleStatus, formatRemainingTime, parseTime, getNowInKolkata } from '@/lib/teacherSchedule';
 import { TeacherScheduleCard } from './TeacherScheduleCard';
 import { Coffee, Calendar as CalendarIcon } from 'lucide-react';
 
@@ -11,57 +11,36 @@ interface TeacherScheduleViewProps {
 }
 
 export default function TeacherScheduleView({ entries }: TeacherScheduleViewProps) {
-  const [todayEntries, setTodayEntries] = useState<DatabaseScheduleEntry[]>([]);
-  const [currentDay, setCurrentDay] = useState('');
-  const [currentDate, setCurrentDate] = useState('');
-  const [status, setStatus] = useState<ReturnType<typeof getScheduleStatus> | null>(null);
-  const [currentCountdown, setCurrentCountdown] = useState<string>('');
-  const [nextCountdown, setNextCountdown] = useState<string>('');
-  const [isClient, setIsClient] = useState(false);
+  const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
-    setIsClient(true);
+    // Initialize with actual Kolkata time on mount
+    setNow(getNowInKolkata());
     
-    // Determine today's day locally
-    const now = new Date();
-    const dayName = now.toLocaleDateString('en-US', { weekday: 'long' });
-    const dateStr = now.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-    
-    setCurrentDay(dayName);
-    setCurrentDate(dateStr);
-
-    const filtered = entries.filter(e => e.day_of_week.toLowerCase() === dayName.toLowerCase());
-    
-    // Sort chronologically
-    filtered.sort((a, b) => parseTime(a.start_time).getTime() - parseTime(b.start_time).getTime());
-    
-    setTodayEntries(filtered);
-    setStatus(getScheduleStatus(filtered));
-  }, [entries]);
-
-  // Timer for countdowns and status recalculation
-  useEffect(() => {
-    if (todayEntries.length === 0) return;
-
+    // Create lightweight timer to trigger re-renders
     const interval = setInterval(() => {
-      const newStatus = getScheduleStatus(todayEntries);
-      setStatus(newStatus);
-      
-      if (newStatus.currentClass) {
-        setCurrentCountdown(getTimeRemaining(newStatus.currentClass.end_time));
-      }
-      
-      if (newStatus.nextClass) {
-        setNextCountdown(getTimeRemaining(newStatus.nextClass.start_time));
-      }
+      setNow(getNowInKolkata());
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [todayEntries]);
+  }, []);
 
-  if (!isClient) {
+  if (!now) {
     return <div className="text-center text-secondary py-12 font-medium animate-pulse">Loading schedule...</div>;
   }
+
+  const dayName = now.toLocaleDateString('en-US', { weekday: 'long', timeZone: 'Asia/Kolkata' });
+  const dateStr = now.toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
+
+  // Filter and sort entries based on current day and time
+  const todayEntries = entries
+    .filter(e => e.day_of_week.toLowerCase() === dayName.toLowerCase())
+    .sort((a, b) => parseTime(a.start_time, now).getTime() - parseTime(b.start_time, now).getTime());
+
+  const scheduleState = getScheduleStatus(todayEntries, now);
+  const { currentClass, nextClass, isFinished, remainingSeconds, status } = scheduleState;
+
+
 
   if (todayEntries.length === 0) {
     return (
@@ -73,21 +52,21 @@ export default function TeacherScheduleView({ entries }: TeacherScheduleViewProp
         <p className="text-secondary font-medium">Enjoy your day!</p>
         <div className="mt-8 px-6 py-2 bg-background border border-card-border rounded-full flex items-center gap-2 text-sm font-bold text-foreground">
           <CalendarIcon className="w-4 h-4 text-accent" />
-          {currentDay}, {currentDate}
+          {dayName}, {dateStr}
         </div>
       </div>
     );
   }
 
-  const { currentClass, nextClass, isFinished } = status || { currentClass: null, nextClass: null, isFinished: false };
+
 
   return (
     <div className="pb-12">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-[22px] font-black text-foreground">Today's Schedule</h2>
         <div className="text-right">
-          <div className="text-accent font-bold text-sm uppercase">{currentDay}</div>
-          <div className="text-secondary text-xs font-bold">{currentDate}</div>
+          <div className="text-accent font-bold text-sm uppercase">{dayName}</div>
+          <div className="text-secondary text-xs font-bold">{dateStr}</div>
         </div>
       </div>
 
@@ -106,7 +85,7 @@ export default function TeacherScheduleView({ entries }: TeacherScheduleViewProp
           </div>
           <h3 className="text-foreground font-black text-lg mb-1 tracking-tight">FREE PERIOD</h3>
           <p className="text-secondary text-sm font-bold mb-4">
-            Next class starts in: <span className="text-foreground">{nextCountdown}</span>
+            Next class starts in: <span className="text-foreground">{formatRemainingTime(remainingSeconds)}</span>
           </p>
         </div>
       )}
@@ -118,8 +97,8 @@ export default function TeacherScheduleView({ entries }: TeacherScheduleViewProp
         {todayEntries.map((entry, index) => {
           const isCurrent = currentClass?.id === entry.id;
           const isNext = nextClass?.id === entry.id;
-          const entryEndTime = parseTime(entry.end_time);
-          const isDone = new Date() > entryEndTime;
+          const entryEndTime = parseTime(entry.end_time, now);
+          const isDone = now > entryEndTime;
           const isLast = index === todayEntries.length - 1;
 
           let mode: "normal" | "active" | "next" | "completed" = "normal";
@@ -127,10 +106,10 @@ export default function TeacherScheduleView({ entries }: TeacherScheduleViewProp
 
           if (isCurrent) {
             mode = "active";
-            countdownStr = currentCountdown;
+            countdownStr = formatRemainingTime(remainingSeconds);
           } else if (isNext) {
             mode = "next";
-            countdownStr = nextCountdown;
+            countdownStr = formatRemainingTime(remainingSeconds);
           } else if (isDone) {
             mode = "completed";
           }
