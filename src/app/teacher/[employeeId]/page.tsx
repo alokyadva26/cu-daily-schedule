@@ -3,6 +3,8 @@ import TeacherScheduleView from '@/components/teacher/TeacherScheduleView';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{ employeeId: string }>;
 }
