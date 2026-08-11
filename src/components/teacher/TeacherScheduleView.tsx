@@ -80,7 +80,7 @@ export default function TeacherScheduleView({ entries, teacherName, teacherId }:
     const isCurrent = !!currentClass;
 
     return (
-      <div className="bg-white border border-slate-200 rounded-[24px] shadow-[0_2px_12px_rgb(0,0,0,0.02)] flex flex-col h-full overflow-hidden">
+      <div className="bg-white border border-slate-200 rounded-[24px] shadow-[0_2px_12px_rgb(0,0,0,0.02)] flex flex-col">
         {/* TOP SECTION: Class Details */}
         <div className="p-8 flex-1 flex flex-col">
           <div className="flex items-center gap-3 mb-4">
@@ -198,9 +198,6 @@ export default function TeacherScheduleView({ entries, teacherName, teacherId }:
           </div>
         ) : (
           <div className="relative">
-            {/* Continuous Timeline line connecting all cards */}
-            <div className="absolute left-[39px] md:left-[59px] top-[24px] bottom-[24px] w-0.5 bg-slate-200 z-0 hidden md:block"></div>
-
             {todayEntries.map((entry, index) => {
               const isCurrent = currentClass?.id === entry.id;
               const isNext = nextClass?.id === entry.id;
@@ -227,7 +224,7 @@ export default function TeacherScheduleView({ entries, teacherName, teacherId }:
       </div>
 
       {/* RIGHT COLUMN: Dynamic Panel */}
-      <div className="sticky top-24 h-[calc(100vh-120px)] hidden lg:block">
+      <div className="sticky top-24 h-[calc(100vh-120px)] hidden lg:block overflow-y-auto rounded-[24px]">
         {renderDynamicPanel()}
       </div>
       
