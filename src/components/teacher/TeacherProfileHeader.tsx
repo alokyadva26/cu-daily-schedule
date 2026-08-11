@@ -46,12 +46,12 @@ export default function TeacherProfileHeader({ teacher }: { teacher: TeacherData
       </div>
 
       {/* Date Widget */}
-      <div className="flex items-center gap-4 bg-white md:bg-transparent px-2 py-2 min-w-[140px] opacity-0 animate-in fade-in duration-500 fill-mode-forwards" style={{ animationDelay: '100ms' }}>
-        <div className="w-10 h-10 rounded-[10px] bg-[#fff5f5] flex items-center justify-center text-[#d32f2f] border border-[#d32f2f]/10">
+      <div className="flex items-center gap-4 bg-white px-2 py-2 min-w-[140px] opacity-0 animate-in fade-in duration-500 fill-mode-forwards" style={{ animationDelay: '100ms' }}>
+        <div className="w-11 h-11 rounded-[12px] bg-[#fff5f5] flex items-center justify-center text-[#d32f2f] border border-[#d32f2f]/10">
           <CalendarIcon className="w-5 h-5" strokeWidth={2} />
         </div>
         <div className="flex flex-col">
-          <span className="text-[14px] font-black text-[#1a2b4c] leading-tight">
+          <span className="text-[15px] font-bold text-[#1a2b4c] leading-tight mb-0.5">
             {now ? dayName : '...'}
           </span>
           <span className="text-[13px] font-bold text-[#d32f2f] leading-tight">

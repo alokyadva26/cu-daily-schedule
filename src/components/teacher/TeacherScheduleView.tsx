@@ -4,13 +4,15 @@ import { useState, useEffect, useMemo } from 'react';
 import { DatabaseScheduleEntry } from '@/lib/db';
 import { getScheduleStatus, formatRemainingTime, parseTime, getNowInKolkata } from '@/lib/teacherSchedule';
 import { TeacherScheduleCard } from './TeacherScheduleCard';
-import { Coffee, Calendar as CalendarIcon, Clock, BookOpen, MapPin, Users, Hash, RefreshCw, AlertCircle, Check } from 'lucide-react';
+import { Coffee, Calendar as CalendarIcon, Clock, BookOpen, MapPin, Users, Hash, RefreshCw, AlertCircle, Check, User as UserIcon } from 'lucide-react';
 
 interface TeacherScheduleViewProps {
   entries: DatabaseScheduleEntry[];
+  teacherName?: string;
+  teacherId?: string;
 }
 
-export default function TeacherScheduleView({ entries }: TeacherScheduleViewProps) {
+export default function TeacherScheduleView({ entries, teacherName, teacherId }: TeacherScheduleViewProps) {
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
@@ -112,35 +114,48 @@ export default function TeacherScheduleView({ entries }: TeacherScheduleViewProp
               </span>
             </div>
             <h3 className="text-2xl font-black text-[#1a2b4c] mb-3 leading-tight">{activeOrNext.course_name}</h3>
-            <span className="inline-flex items-center px-3 py-1 bg-[#fff5f5] text-[#d32f2f] text-xs font-bold rounded-[8px]">
+            <span className="inline-flex items-center px-3 py-1 bg-[#fff5f5] text-[#d32f2f] text-xs font-bold rounded-[8px] border border-[#d32f2f]/10">
               {activeOrNext.course_code} • {activeOrNext.course_type}
             </span>
           </div>
           
-          <div className="p-6 flex-1 flex flex-col justify-center gap-4 text-sm font-medium text-[#495057]">
-            <div className="flex justify-between items-center py-2">
-              <div className="flex items-center gap-2 text-[#868e96]">
+          <div className="flex-1 flex flex-col text-[13px]">
+            {/* Faculty Row */}
+            <div className="flex justify-between items-center px-6 py-4 border-b border-slate-100">
+              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
+                <UserIcon className="w-4 h-4" /> Faculty
+              </div>
+              <span className="font-bold text-[#1a2b4c] text-right">
+                {teacherName ? `${teacherName} (${teacherId})` : 'Loading...'}
+              </span>
+            </div>
+
+            {/* Classroom Row */}
+            <div className="flex justify-between items-center px-6 py-4 border-b border-slate-100">
+              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
                 <MapPin className="w-4 h-4" /> Classroom
               </div>
-              <span className="font-bold text-[#d32f2f] bg-[#fff5f5] px-2 py-0.5 rounded">
+              <span className="font-bold text-[#d32f2f] bg-[#fff5f5] px-2 py-0.5 rounded text-right">
                 Block-{activeOrNext.block_no} / {activeOrNext.room_no}
               </span>
             </div>
             
-            <div className="flex justify-between items-center py-2 border-t border-slate-100">
-              <div className="flex items-center gap-2 text-[#868e96]">
+            {/* Group Row */}
+            <div className="flex justify-between items-center px-6 py-4 border-b border-slate-100">
+              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
                 <Users className="w-4 h-4" /> Group
               </div>
-              <span className="font-bold text-[#1a2b4c]">
+              <span className="font-bold text-[#1a2b4c] text-right">
                 {activeOrNext.student_group === 'empty' ? activeOrNext.section : `Group ${activeOrNext.student_group}`}
               </span>
             </div>
             
-            <div className="flex justify-between items-center py-2 border-t border-slate-100">
-              <div className="flex items-center gap-2 text-[#868e96]">
+            {/* Time Row */}
+            <div className="flex justify-between items-center px-6 py-4">
+              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
                 <Clock className="w-4 h-4" /> Time
               </div>
-              <span className="font-bold text-[#1a2b4c]">
+              <span className="font-bold text-[#1a2b4c] text-right">
                 {activeOrNext.start_time} - {activeOrNext.end_time}
               </span>
             </div>

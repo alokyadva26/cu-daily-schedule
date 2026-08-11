@@ -56,7 +56,11 @@ export default async function TeacherSchedulePage({ params }: PageProps) {
         <TeacherProfileHeader teacher={teacher} />
 
         {/* Two-Column Main Content */}
-        <TeacherScheduleView entries={allEntries} />
+        <TeacherScheduleView 
+          entries={allEntries} 
+          teacherName={teacher.employee_name}
+          teacherId={teacher.employee_id}
+        />
       </main>
     </div>
   );

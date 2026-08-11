@@ -20,25 +20,25 @@ export function TeacherScheduleCard({ entry, mode = "normal", isLast }: TeacherS
     <div className="relative flex gap-4 md:gap-8 group mb-6 md:mb-8">
       
       {/* TIMELINE COLUMN */}
-      <div className="flex flex-col items-end md:items-center w-20 md:w-28 shrink-0 relative pr-4 md:pr-0">
+      <div className="flex w-24 shrink-0 relative pr-6">
         
+        {/* Time Text */}
+        <div className="flex flex-col w-full text-right mt-1.5 z-10 text-[12px] font-bold leading-tight text-[#1a2b4c]">
+          <span className="mb-0.5">{entry.start_time}</span>
+          <span className="text-[#868e96]">{entry.end_time}</span>
+        </div>
+
         {/* Vertical Line */}
         {!isLast && (
-          <div className="absolute top-[24px] bottom-[-48px] right-[7px] md:right-auto w-0.5 bg-slate-200 z-0 hidden md:block"></div>
+          <div className="absolute top-[26px] bottom-[-48px] right-[7px] w-[2px] bg-slate-200 z-0"></div>
         )}
-
-        {/* Time Text */}
-        <div className="text-[11px] md:text-[13px] font-bold text-right md:text-center mt-1 z-10 flex flex-col leading-[1.4] text-[#1a2b4c]">
-          <span>{entry.start_time}</span>
-          <span>{entry.end_time}</span>
-        </div>
 
         {/* Timeline Node */}
         <div className={cn(
-          "absolute right-[-1px] md:right-auto top-[6px] md:top-[8px] z-10 w-5 h-5 rounded-full flex items-center justify-center border-[2.5px] bg-white shadow-sm hidden md:flex",
+          "absolute right-[-1px] top-[10px] z-10 w-4 h-4 rounded-full flex items-center justify-center border-2 bg-white",
           isHighlighted ? "border-[#d32f2f] bg-[#d32f2f]" : isCompleted ? "border-[#28a745] bg-[#28a745]" : "border-slate-300"
         )}>
-          {isCompleted && <Check className="w-3 h-3 text-white stroke-[3]" />}
+          {isCompleted && <Check className="w-2.5 h-2.5 text-white stroke-[3]" />}
         </div>
       </div>
 
