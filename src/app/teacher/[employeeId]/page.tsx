@@ -1,5 +1,6 @@
 import { getTeacherByEmployeeId, getTeacherSchedule } from '@/lib/db';
 import TeacherScheduleView from '@/components/teacher/TeacherScheduleView';
+import TeacherHeader from '@/components/teacher/TeacherHeader';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 
@@ -17,8 +18,8 @@ export default async function TeacherSchedulePage({ params }: PageProps) {
   
   if (!teacher) {
     return (
-      <div className="min-h-[100dvh] bg-background p-6 flex flex-col items-center justify-center">
-        <div className="cuims-card p-8 bg-white border border-card-border rounded-[24px] shadow-sm text-center max-w-sm w-full">
+      <div className="min-h-[100dvh] bg-[#f8f9fa] p-6 flex flex-col items-center justify-center">
+        <div className="cuims-card p-8 bg-white border border-slate-200 rounded-[24px] shadow-sm text-center max-w-sm w-full">
           <div className="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-2xl font-black">!</span>
           </div>
@@ -40,35 +41,26 @@ export default async function TeacherSchedulePage({ params }: PageProps) {
 
   // Fetch all schedule entries for this teacher
   const allEntries = await getTeacherSchedule(teacher.employee_id);
-  
-  // Since we want dynamic day, the Client Component will filter them based on the local browser date.
-  // We pass all entries to the client.
 
   return (
-    <div className="min-h-[100dvh] bg-background pb-24">
+    <div className="min-h-[100dvh] bg-[#f8f9fa] pb-24">
       {/* Header */}
-      <header className="bg-white border-b border-card-border sticky top-0 z-30 shadow-sm">
-        <div className="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/teacher" className="p-2 -ml-2 text-secondary hover:text-foreground transition-colors rounded-full hover:bg-background">
-            <ArrowLeft className="w-5 h-5" />
-          </Link>
-          <div className="font-bold text-foreground text-sm uppercase tracking-wider">Teacher Schedule</div>
-          <div className="w-9"></div> {/* Balancer */}
-        </div>
-      </header>
+      <TeacherHeader />
 
-      <main className="max-w-3xl mx-auto px-4 pt-6">
+      <main className="max-w-4xl mx-auto px-4 pt-8">
         {/* Profile Card */}
-        <div className="cuims-card p-6 bg-white border border-card-border rounded-[24px] shadow-sm mb-6 flex items-center gap-4">
-          <div className="w-14 h-14 rounded-full bg-accent text-white flex items-center justify-center text-xl font-black shrink-0">
-            {teacher.employee_name.charAt(0)}
+        <div className="bg-white border border-slate-200 rounded-[24px] shadow-[0_4px_24px_rgb(0,0,0,0.02)] p-6 md:p-8 mb-10 flex flex-col md:flex-row items-center gap-6">
+          <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-[#d32f2f] text-white flex items-center justify-center text-3xl font-black shrink-0 shadow-sm">
+            {teacher.employee_name.charAt(0).toUpperCase()}
           </div>
-          <div className="flex-1 min-w-0">
-            <h1 className="text-xl font-black text-foreground truncate">{teacher.employee_name}</h1>
-            <p className="text-secondary text-sm font-medium flex gap-2 items-center">
-              <span className="bg-background px-2 py-0.5 rounded text-xs font-bold uppercase">{teacher.employee_id}</span>
-              <span>{teacher.department}</span>
-            </p>
+          <div className="flex-1 min-w-0 text-center md:text-left flex flex-col items-center md:items-start">
+            <h1 className="text-2xl md:text-[28px] font-black text-[#1a2b4c] mb-2">{teacher.employee_name}</h1>
+            <div className="flex items-center gap-3">
+              <span className="bg-[#f1f3f5] text-[#495057] px-3 py-1 rounded-[8px] text-xs font-bold uppercase tracking-wide">
+                {teacher.employee_id}
+              </span>
+              <span className="text-[#6c757d] text-sm font-bold uppercase tracking-wider">{teacher.department}</span>
+            </div>
           </div>
         </div>
 

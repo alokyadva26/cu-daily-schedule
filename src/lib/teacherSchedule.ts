@@ -98,10 +98,17 @@ export function getScheduleStatus(entries: DatabaseScheduleEntry[], currentTime:
 }
 
 /**
- * Formats seconds into "MM min SS sec"
+ * Formats seconds into "MM min SS sec" or "X hr Y min"
  */
 export function formatRemainingTime(remainingSeconds: number): string {
   if (remainingSeconds <= 0) return '0 min 0 sec';
+  
+  if (remainingSeconds >= 3600) {
+    const hours = Math.floor(remainingSeconds / 3600);
+    const minutes = Math.floor((remainingSeconds % 3600) / 60);
+    return `${hours} hr ${minutes} min`;
+  }
+  
   const minutes = Math.floor(remainingSeconds / 60);
   const seconds = remainingSeconds % 60;
   return `${minutes} min ${seconds} sec`;
