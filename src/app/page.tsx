@@ -1,249 +1,131 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { format, addDays } from "date-fns";
-import timetableData from "@/data/timetable.json";
-import { ClassSession, Timetable } from "@/types";
-import { Header } from "@/components/Header";
-import { ScheduleCard } from "@/components/ScheduleCard";
-import { ClassDetails } from "@/components/ClassDetails";
-import { EmptyState } from "@/components/EmptyState";
-import { EndOfDayState } from "@/components/EndOfDayState";
-import { BottomCard } from "@/components/BottomCard";
-import { parseTime, getCountdownString } from "@/lib/utils";
-import { Calendar } from "lucide-react";
+import Link from 'next/link';
 
-type EnrichedSession = ClassSession & {
-  mode: "normal" | "active" | "next";
-  countdown?: string;
-  originalIndex: number;
-};
-
-export default function Home() {
-  const [currentTime, setCurrentTime] = useState<Date | null>(null);
-  const [todayClasses, setTodayClasses] = useState<ClassSession[]>([]);
-  const [tomorrowClasses, setTomorrowClasses] = useState<ClassSession[]>([]);
-  
-  const [selectedSession, setSelectedSession] = useState<ClassSession | null>(null);
-  
-  const [viewState, setViewState] = useState<"weekend" | "active" | "next" | "end-of-day" | "tomorrow">("weekend");
-  const [displaySession, setDisplaySession] = useState<EnrichedSession | null>(null);
-
-  // Initialize clock
-  useEffect(() => {
-    setCurrentTime(new Date());
-    const interval = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 60000); // update every minute
-    return () => clearInterval(interval);
-  }, []);
-
-  // Main logic
-  useEffect(() => {
-    if (!currentTime) return;
+const PremiumNfcIcon = ({ className, strokeWidth = 1.75 }: { className?: string, strokeWidth?: number }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* NFC Card */}
+    <rect x="3" y="6" width="11" height="12" rx="2.5" />
+    {/* Subtle Card Stripe */}
+    <path d="M3 10.5h11" strokeOpacity="0.4" />
     
-    // Check if we are forcibly looking at tomorrow
-    if (viewState === "tomorrow") {
-      return; 
-    }
+    {/* Contactless Waves */}
+    <path d="M17 9.5a2.5 2.5 0 0 1 0 5" />
+    <path d="M20 7a6 6 0 0 1 0 10" />
+  </svg>
+);
 
-    const dayName = format(currentTime, "EEEE");
+const PremiumQrIcon = ({ className, strokeWidth = 1.75 }: { className?: string, strokeWidth?: number }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>
+    {/* Outer Scanner Brackets */}
+    <path d="M5 9V6a2 2 0 0 1 2-2h2" />
+    <path d="M15 4h2a2 2 0 0 1 2 2v3" />
+    <path d="M5 15v3a2 2 0 0 0 2 2h2" />
+    <path d="M15 20h2a2 2 0 0 0 2-2v-3" />
     
-    if (dayName === "Saturday" || dayName === "Sunday") {
-      setViewState("weekend");
-      return;
-    }
+    {/* Stylized Minimal QR Pattern */}
+    <rect x="9" y="9" width="2" height="2" rx="0.5" />
+    <rect x="13" y="9" width="2" height="2" rx="0.5" />
+    <rect x="9" y="13" width="2" height="2" rx="0.5" />
+    <rect x="13" y="13" width="2" height="2" rx="0.5" />
+    
+    {/* Subtle Scan Line */}
+    <line x1="3" y1="12" x2="21" y2="12" strokeOpacity="0.4" strokeDasharray="3 3" />
+  </svg>
+);
 
-    // Load today's classes
-    const classesForToday = (timetableData as Timetable).filter(
-      (session) => session.day === dayName
-    );
-
-    if (classesForToday.length === 0) {
-      setViewState("weekend");
-      return;
-    }
-
-    setTodayClasses(classesForToday);
-
-    // Prepare tomorrow's classes just in case
-    const tomorrowDate = addDays(currentTime, 1);
-    const tomorrowName = format(tomorrowDate, "EEEE");
-    const classesForTomorrow = (timetableData as Timetable).filter(
-      (session) => session.day === tomorrowName
-    );
-    setTomorrowClasses(classesForTomorrow);
-
-    // Determine current state
-    let activeFound = false;
-    let nextFound = false;
-    let lastClassEnded = false;
-
-    for (let i = 0; i < classesForToday.length; i++) {
-      const session = classesForToday[i];
-      const start = parseTime(session.startTime, currentTime);
-      const end = parseTime(session.endTime, currentTime);
-
-      if (currentTime >= start && currentTime <= end) {
-        // Active class
-        setDisplaySession({
-          ...session,
-          mode: "active",
-          countdown: getCountdownString(end, currentTime),
-          originalIndex: i
-        });
-        if (selectedSession?.day !== session.day || selectedSession?.startTime !== session.startTime) {
-          setSelectedSession(session);
-        }
-        setViewState("active");
-        activeFound = true;
-        break;
-      }
-    }
-
-    if (!activeFound) {
-      // Find the NEXT class
-      for (let i = 0; i < classesForToday.length; i++) {
-        const session = classesForToday[i];
-        const start = parseTime(session.startTime, currentTime);
-        
-        if (currentTime < start) {
-          setDisplaySession({
-            ...session,
-            mode: "next",
-            countdown: getCountdownString(start, currentTime),
-            originalIndex: i
-          });
-          if (selectedSession?.day !== session.day || selectedSession?.startTime !== session.startTime) {
-            setSelectedSession(session);
-          }
-          setViewState("next");
-          nextFound = true;
-          break;
-        }
-      }
-    }
-
-    if (!activeFound && !nextFound) {
-      // All classes are in the past for today
-      setViewState("end-of-day");
-      // keep selectedSession as whatever it was, or null
-    }
-
-  }, [currentTime, viewState]);
-
-  // If we don't have current time yet, don't render content to avoid hydration mismatch
-  if (!currentTime) return null;
-
+export default function LandingPage() {
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-      <Header />
+    <main className="fixed inset-0 w-screen h-screen flex flex-col items-center justify-between py-8 px-4 overflow-hidden overscroll-none font-sans bg-[#f8f9fa] z-50">
+      {/* Authentic CU Campus Background with subtle white translucent overlay */}
+      <div className="absolute inset-0 z-0 overflow-hidden bg-[#f8f9fa]">
+        <div 
+          className="absolute inset-0 opacity-[0.15]"
+          style={{
+            backgroundImage: 'url("/cu-bg.png")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+          }}
+        />
+        <div className="absolute inset-0 bg-white/40" />
+      </div>
       
-      {viewState === "weekend" ? (
-        <EmptyState />
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 mt-6">
-          {/* LEFT SIDE */}
-          <section className="order-2 lg:order-1 lg:col-span-7 flex flex-col gap-4">
-            
-            {viewState === "end-of-day" && (
-              <EndOfDayState 
-                onViewTomorrow={() => {
-                  setViewState("tomorrow");
-                  if (tomorrowClasses.length > 0) {
-                    setSelectedSession(tomorrowClasses[0]);
-                  }
-                }} 
-              />
-            )}
+      {/* Content wrapper */}
+      <div className="relative z-10 flex flex-col items-center justify-between w-full max-w-5xl h-full flex-1 min-h-0 py-[min(1rem,2vh)]">
+        
+        {/* Top Header */}
+        <div className="flex flex-col items-center pt-[min(1rem,2vh)]">
+          {/* CU Logo */}
+          <div className="mb-[min(1rem,2vh)]">
+            <img 
+              src="/cu-logo.png" 
+              alt="Chandigarh University Logo" 
+              className="h-[min(5rem,8vh)] w-auto object-contain drop-shadow-md"
+            />
+          </div>
+          
+          <h1 className="text-[clamp(2rem,6vh,3.75rem)] font-black text-[#1a2b4c] tracking-tight mb-[min(1rem,2vh)] leading-none">
+            DAILY SCHEDULE
+          </h1>
+          
+          <div className="flex items-center gap-[min(1rem,2vw)]">
+            <div className="h-[1px] w-[min(3rem,4vw)] bg-red-600/60" />
+            <h2 className="text-[clamp(0.75rem,1.8vh,1rem)] font-semibold tracking-[0.2em] text-[#4a5568] uppercase">
+              SMART TIMETABLE DEVICE
+            </h2>
+            <div className="h-[1px] w-[min(3rem,4vw)] bg-red-600/60" />
+          </div>
+        </div>
 
-
-
-            {viewState === "tomorrow" && (
-              <>
-                <h2 className="text-xl font-bold mb-2 px-1 text-accent flex items-center justify-between">
-                  Tomorrow's Classes
-                  <button 
-                    onClick={() => {
-                      setViewState("weekend"); // Triggers re-evaluation of current day
-                      setCurrentTime(new Date()); // force re-eval
-                    }}
-                    className="text-sm font-medium text-secondary hover:text-foreground underline decoration-dashed"
-                  >
-                    Back to Today
-                  </button>
-                </h2>
-                {tomorrowClasses.length > 0 ? (
-                  tomorrowClasses.map((session, idx) => (
-                    <ScheduleCard
-                      key={idx}
-                      session={session}
-                      isSelected={selectedSession === session}
-                      onClick={() => setSelectedSession(session)}
-                      mode="normal"
-                    />
-                  ))
-                ) : (
-                  <div className="cuims-card p-8 text-center text-secondary">
-                    No classes scheduled for tomorrow! 🎉
-                  </div>
-                )}
-              </>
-            )}
-
-            {viewState !== "tomorrow" && todayClasses.length > 0 && (
-              <div className="flex flex-col gap-6">
-                <h2 className="text-[22px] font-extrabold px-1 flex items-center gap-3 text-foreground">
-                  <Calendar className="w-6 h-6 text-accent" strokeWidth={2.5} />
-                  Today's Schedule
-                </h2>
-                <div className="flex flex-col gap-5 max-h-[700px] overflow-y-auto pr-2 custom-scrollbar pl-1 pt-1">
-                  {todayClasses.map((session, idx) => {
-                    const start = parseTime(session.startTime, currentTime);
-                    const end = parseTime(session.endTime, currentTime);
-                    let mode: "normal" | "active" | "next" | "completed" = "normal";
-                    let countdown = undefined;
-                    
-                    if (currentTime > end) {
-                      mode = "completed";
-                    } else if (currentTime >= start && currentTime <= end) {
-                      mode = "active";
-                      countdown = getCountdownString(end, currentTime);
-                    } else if (displaySession?.originalIndex === idx && viewState === "next") {
-                      mode = "next";
-                      countdown = getCountdownString(start, currentTime);
-                    }
-
-                    return (
-                      <ScheduleCard
-                        key={idx}
-                        session={session}
-                        isSelected={selectedSession === session}
-                        onClick={() => setSelectedSession(session)}
-                        mode={mode}
-                        countdown={countdown}
-                        isLast={idx === todayClasses.length - 1}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
-          </section>
-
-          {/* RIGHT SIDE */}
-          <section className="order-1 lg:order-2 lg:col-span-5 flex flex-col h-full">
-            <div className="flex-1">
-              {(viewState !== "end-of-day" || selectedSession) && (
-                <ClassDetails session={selectedSession} />
-              )}
+        {/* Main Cards */}
+        <div className="flex flex-col md:flex-row items-center justify-center gap-[min(2rem,4vw)] w-full my-[min(1.5rem,3vh)] min-h-0 flex-1">
+          
+          {/* Left Card: Student NFC */}
+          <Link href="/student" className="group flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm rounded-[min(2rem,4vh)] p-[min(2.5rem,4vh)] w-full max-w-[min(24rem,38vh)] aspect-square shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 transition-all duration-300 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] hover:-translate-y-1 active:translate-y-0 active:shadow-md cursor-pointer">
+            <div className="w-[min(6rem,12vh)] h-[min(6rem,12vh)] rounded-full border border-slate-200 flex items-center justify-center mb-[min(1.5rem,3vh)] group-hover:scale-105 transition-transform duration-300 shrink-0">
+              <PremiumNfcIcon className="w-[min(3.5rem,7vh)] h-[min(3.5rem,7vh)] text-[#1a2b4c]" strokeWidth={1.5} />
             </div>
             
-            <BottomCard />
-          </section>
+            <div className="h-[2px] w-[min(3rem,5vh)] bg-red-600/40 mb-[min(1.5rem,3vh)] group-hover:w-[min(4.5rem,7vh)] transition-all duration-300 shrink-0" />
+            
+            <h3 className="text-[clamp(1.125rem,2.2vh,1.5rem)] font-bold text-[#1a2b4c] mb-[min(0.5rem,1vh)] text-center leading-tight">
+              TAP YOUR NFC CARD
+            </h3>
+            <p className="text-[clamp(0.875rem,1.8vh,1rem)] text-slate-500 font-medium text-center">
+              to view your timetable
+            </p>
+          </Link>
+
+          {/* Right Card: Teacher QR */}
+          <Link href="/teacher" className="group flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm rounded-[min(2rem,4vh)] p-[min(2.5rem,4vh)] w-full max-w-[min(24rem,38vh)] aspect-square shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 transition-all duration-300 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] hover:-translate-y-1 active:translate-y-0 active:shadow-md cursor-pointer">
+            <div className="w-[min(6rem,12vh)] h-[min(6rem,12vh)] rounded-full border border-slate-200 flex items-center justify-center mb-[min(1.5rem,3vh)] group-hover:scale-105 transition-transform duration-300 shrink-0">
+              <PremiumQrIcon className="w-[min(3.5rem,7vh)] h-[min(3.5rem,7vh)] text-[#1a2b4c]" strokeWidth={1.5} />
+            </div>
+            
+            <div className="h-[2px] w-[min(3rem,5vh)] bg-red-600/40 mb-[min(1.5rem,3vh)] group-hover:w-[min(4.5rem,7vh)] transition-all duration-300 shrink-0" />
+            
+            <h3 className="text-[clamp(1.125rem,2.2vh,1.5rem)] font-bold text-[#1a2b4c] mb-[min(0.5rem,1vh)] text-center leading-tight">
+              SCAN TEACHER QR CODE
+            </h3>
+            <p className="text-[clamp(0.875rem,1.8vh,1rem)] text-slate-500 font-medium text-center">
+              to view teacher timetable
+            </p>
+          </Link>
         </div>
-      )}
+
+        {/* Bottom Status */}
+        <div className="flex flex-col items-center pb-[min(1rem,2vh)] mt-auto">
+          <h3 className="text-[clamp(1rem,2vh,1.125rem)] font-bold text-[#1a2b4c] mb-1">
+            DEVICE READY
+          </h3>
+          <p className="text-[clamp(0.875rem,1.8vh,1rem)] text-slate-500 font-medium mb-[min(0.75rem,1.5vh)]">
+            Please tap your NFC card or scan QR code
+          </p>
+          <div className="h-[3px] w-[min(3rem,4vw)] bg-red-600 rounded-full" />
+        </div>
+        
+      </div>
     </main>
   );
 }
