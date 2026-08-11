@@ -36,9 +36,9 @@ const PremiumQrIcon = ({ className, strokeWidth = 1.75 }: { className?: string, 
 
 export default function LandingPage() {
   return (
-    <main className="fixed inset-0 w-screen h-screen flex flex-col items-center justify-between py-8 px-4 overflow-hidden overscroll-none font-sans bg-[#f8f9fa] z-50">
+    <main className="relative min-h-[100dvh] w-full max-w-[100vw] flex flex-col items-center justify-between py-6 px-4 overflow-x-hidden font-sans bg-[#f8f9fa] box-border">
       {/* Authentic CU Campus Background with subtle white translucent overlay */}
-      <div className="absolute inset-0 z-0 overflow-hidden bg-[#f8f9fa]">
+      <div className="fixed inset-0 z-0 bg-[#f8f9fa] pointer-events-none">
         <div 
           className="absolute inset-0 opacity-[0.15]"
           style={{
@@ -52,77 +52,77 @@ export default function LandingPage() {
       </div>
       
       {/* Content wrapper */}
-      <div className="relative z-10 flex flex-col items-center justify-between w-full max-w-5xl h-full flex-1 min-h-0 py-[min(1rem,2vh)]">
+      <div className="relative z-10 flex flex-col items-center justify-between w-full max-w-5xl h-full flex-1">
         
         {/* Top Header */}
-        <div className="flex flex-col items-center pt-[min(1rem,2vh)]">
+        <div className="flex flex-col items-center pt-4 md:pt-[min(1rem,2vh)] w-full">
           {/* CU Logo */}
-          <div className="mb-[min(1rem,2vh)]">
+          <div className="mb-4 md:mb-[min(1rem,2vh)]">
             <img 
               src="/cu-logo.png" 
               alt="Chandigarh University Logo" 
-              className="h-[min(5rem,8vh)] w-auto object-contain drop-shadow-md"
+              className="h-16 md:h-[min(5rem,8vh)] w-auto object-contain drop-shadow-md"
             />
           </div>
           
-          <h1 className="text-[clamp(2rem,6vh,3.75rem)] font-black text-[#1a2b4c] tracking-tight mb-[min(1rem,2vh)] leading-none">
+          <h1 className="text-[clamp(1.75rem,8vw,3.75rem)] md:text-[clamp(2rem,6vh,3.75rem)] font-black text-[#1a2b4c] tracking-tight mb-2 md:mb-[min(1rem,2vh)] leading-none text-center w-full max-w-full break-words">
             DAILY SCHEDULE
           </h1>
           
-          <div className="flex items-center gap-[min(1rem,2vw)]">
-            <div className="h-[1px] w-[min(3rem,4vw)] bg-red-600/60" />
-            <h2 className="text-[clamp(0.75rem,1.8vh,1rem)] font-semibold tracking-[0.2em] text-[#4a5568] uppercase">
+          <div className="flex items-center gap-2 md:gap-[min(1rem,2vw)] w-full justify-center max-w-full">
+            <div className="h-[1px] w-12 md:w-[min(3rem,4vw)] bg-red-600/60 shrink-0" />
+            <h2 className="text-[clamp(0.65rem,3vw,1rem)] md:text-[clamp(0.75rem,1.8vh,1rem)] font-semibold tracking-[0.1em] md:tracking-[0.2em] text-[#4a5568] uppercase text-center whitespace-nowrap overflow-hidden text-ellipsis">
               SMART TIMETABLE DEVICE
             </h2>
-            <div className="h-[1px] w-[min(3rem,4vw)] bg-red-600/60" />
+            <div className="h-[1px] w-12 md:w-[min(3rem,4vw)] bg-red-600/60 shrink-0" />
           </div>
         </div>
 
         {/* Main Cards */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-[min(2rem,4vw)] w-full my-[min(1.5rem,3vh)] min-h-0 flex-1">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-14 w-full my-8 md:my-[min(1.5rem,3vh)] flex-1 box-border">
           
           {/* Left Card: Student NFC */}
-          <Link href="/student" className="group flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm rounded-[min(2rem,4vh)] p-[min(2.5rem,4vh)] w-full max-w-[min(24rem,38vh)] aspect-square shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 transition-all duration-300 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] hover:-translate-y-1 active:translate-y-0 active:shadow-md cursor-pointer">
-            <div className="w-[min(6rem,12vh)] h-[min(6rem,12vh)] rounded-full border border-slate-200 flex items-center justify-center mb-[min(1.5rem,3vh)] group-hover:scale-105 transition-transform duration-300 shrink-0">
-              <PremiumNfcIcon className="w-[min(3.5rem,7vh)] h-[min(3.5rem,7vh)] text-[#1a2b4c]" strokeWidth={1.5} />
+          <Link href="/student" className="group flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm rounded-[2rem] md:rounded-[min(2rem,4vh)] py-8 px-6 md:p-[min(2.5rem,4vh)] w-full max-w-[420px] md:max-w-[min(24rem,38vh)] md:aspect-square shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 transition-all duration-300 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] hover:-translate-y-1 active:translate-y-0 active:shadow-md cursor-pointer box-border mx-auto md:mx-0">
+            <div className="w-20 h-20 md:w-[min(6rem,12vh)] md:h-[min(6rem,12vh)] rounded-full border border-slate-200 flex items-center justify-center mb-6 md:mb-[min(1.5rem,3vh)] group-hover:scale-105 transition-transform duration-300 shrink-0">
+              <PremiumNfcIcon className="w-10 h-10 md:w-[min(3.5rem,7vh)] md:h-[min(3.5rem,7vh)] text-[#1a2b4c]" strokeWidth={1.5} />
             </div>
             
-            <div className="h-[2px] w-[min(3rem,5vh)] bg-red-600/40 mb-[min(1.5rem,3vh)] group-hover:w-[min(4.5rem,7vh)] transition-all duration-300 shrink-0" />
+            <div className="h-[2px] w-12 md:w-[min(3rem,5vh)] bg-red-600/40 mb-6 md:mb-[min(1.5rem,3vh)] group-hover:w-16 md:group-hover:w-[min(4.5rem,7vh)] transition-all duration-300 shrink-0" />
             
-            <h3 className="text-[clamp(1.125rem,2.2vh,1.5rem)] font-bold text-[#1a2b4c] mb-[min(0.5rem,1vh)] text-center leading-tight">
+            <h3 className="text-lg md:text-[clamp(1.125rem,2.2vh,1.5rem)] font-bold text-[#1a2b4c] mb-2 md:mb-[min(0.5rem,1vh)] text-center leading-tight">
               TAP YOUR NFC CARD
             </h3>
-            <p className="text-[clamp(0.875rem,1.8vh,1rem)] text-slate-500 font-medium text-center">
+            <p className="text-sm md:text-[clamp(0.875rem,1.8vh,1rem)] text-slate-500 font-medium text-center">
               to view your timetable
             </p>
           </Link>
 
           {/* Right Card: Teacher QR */}
-          <Link href="/teacher" className="group flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm rounded-[min(2rem,4vh)] p-[min(2.5rem,4vh)] w-full max-w-[min(24rem,38vh)] aspect-square shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 transition-all duration-300 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] hover:-translate-y-1 active:translate-y-0 active:shadow-md cursor-pointer">
-            <div className="w-[min(6rem,12vh)] h-[min(6rem,12vh)] rounded-full border border-slate-200 flex items-center justify-center mb-[min(1.5rem,3vh)] group-hover:scale-105 transition-transform duration-300 shrink-0">
-              <PremiumQrIcon className="w-[min(3.5rem,7vh)] h-[min(3.5rem,7vh)] text-[#1a2b4c]" strokeWidth={1.5} />
+          <Link href="/teacher" className="group flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm rounded-[2rem] md:rounded-[min(2rem,4vh)] py-8 px-6 md:p-[min(2.5rem,4vh)] w-full max-w-[420px] md:max-w-[min(24rem,38vh)] md:aspect-square shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 transition-all duration-300 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] hover:-translate-y-1 active:translate-y-0 active:shadow-md cursor-pointer box-border mx-auto md:mx-0">
+            <div className="w-20 h-20 md:w-[min(6rem,12vh)] md:h-[min(6rem,12vh)] rounded-full border border-slate-200 flex items-center justify-center mb-6 md:mb-[min(1.5rem,3vh)] group-hover:scale-105 transition-transform duration-300 shrink-0">
+              <PremiumQrIcon className="w-10 h-10 md:w-[min(3.5rem,7vh)] md:h-[min(3.5rem,7vh)] text-[#1a2b4c]" strokeWidth={1.5} />
             </div>
             
-            <div className="h-[2px] w-[min(3rem,5vh)] bg-red-600/40 mb-[min(1.5rem,3vh)] group-hover:w-[min(4.5rem,7vh)] transition-all duration-300 shrink-0" />
+            <div className="h-[2px] w-12 md:w-[min(3rem,5vh)] bg-red-600/40 mb-6 md:mb-[min(1.5rem,3vh)] group-hover:w-16 md:group-hover:w-[min(4.5rem,7vh)] transition-all duration-300 shrink-0" />
             
-            <h3 className="text-[clamp(1.125rem,2.2vh,1.5rem)] font-bold text-[#1a2b4c] mb-[min(0.5rem,1vh)] text-center leading-tight">
+            <h3 className="text-lg md:text-[clamp(1.125rem,2.2vh,1.5rem)] font-bold text-[#1a2b4c] mb-2 md:mb-[min(0.5rem,1vh)] text-center leading-tight">
               SCAN TEACHER QR CODE
             </h3>
-            <p className="text-[clamp(0.875rem,1.8vh,1rem)] text-slate-500 font-medium text-center">
+            <p className="text-sm md:text-[clamp(0.875rem,1.8vh,1rem)] text-slate-500 font-medium text-center">
               to view teacher timetable
             </p>
           </Link>
         </div>
 
         {/* Bottom Status */}
-        <div className="flex flex-col items-center pb-[min(1rem,2vh)] mt-auto">
-          <h3 className="text-[clamp(1rem,2vh,1.125rem)] font-bold text-[#1a2b4c] mb-1">
+        <div className="flex flex-col items-center pb-4 md:pb-[min(1rem,2vh)] mt-4 md:mt-auto">
+          <h3 className="text-base md:text-[clamp(1rem,2vh,1.125rem)] font-bold text-[#1a2b4c] mb-1 text-center">
             DEVICE READY
           </h3>
-          <p className="text-[clamp(0.875rem,1.8vh,1rem)] text-slate-500 font-medium mb-[min(0.75rem,1.5vh)]">
+          <p className="text-sm md:text-[clamp(0.875rem,1.8vh,1rem)] text-slate-500 font-medium mb-3 md:mb-[min(0.75rem,1.5vh)] text-center max-w-[280px] md:max-w-none mx-auto">
             Please tap your NFC card or scan QR code
           </p>
-          <div className="h-[3px] w-[min(3rem,4vw)] bg-red-600 rounded-full" />
+          <div className="h-[3px] w-12 md:w-[min(3rem,4vw)] bg-red-600 rounded-full" />
         </div>
         
       </div>
