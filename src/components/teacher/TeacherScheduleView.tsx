@@ -80,27 +80,27 @@ export default function TeacherScheduleView({ entries, teacherName, teacherId }:
     const isCurrent = !!currentClass;
 
     return (
-      <div className="bg-white border border-slate-200 rounded-[24px] shadow-[0_2px_12px_rgb(0,0,0,0.02)] flex flex-col">
+      <div className="bg-white border border-slate-200 rounded-[24px] shadow-[0_2px_12px_rgb(0,0,0,0.02)] flex flex-col h-full">
         {/* TOP SECTION: Class Details */}
-        <div className="p-8 flex-1 flex flex-col">
-          <div className="flex items-center gap-3 mb-4">
-            <BookOpen className="w-5 h-5 text-[#d32f2f]" />
-            <span className="text-[#868e96] font-black text-[13px] tracking-widest uppercase">
+        <div className="p-6 flex-1 flex flex-col">
+          <div className="flex items-center gap-3 mb-3">
+            <BookOpen className="w-4 h-4 text-[#d32f2f]" />
+            <span className="text-[#868e96] font-black text-[12px] tracking-widest uppercase">
               {isCurrent ? 'CURRENT CLASS' : 'NEXT CLASS'}
             </span>
           </div>
-          <h3 className="text-[26px] font-black text-[#1a2b4c] mb-3 leading-tight tracking-tight">{activeOrNext.course_name}</h3>
-          <div className="mb-8">
-            <span className="inline-flex items-center px-3 py-1 bg-[#fff5f5] text-[#d32f2f] text-xs font-bold rounded-[8px]">
+          <h3 className="text-[22px] font-black text-[#1a2b4c] mb-2 leading-tight tracking-tight">{activeOrNext.course_name}</h3>
+          <div className="mb-4">
+            <span className="inline-flex items-center px-2.5 py-1 bg-[#fff5f5] text-[#d32f2f] text-[11px] font-bold rounded-[6px]">
               {activeOrNext.course_code} • {activeOrNext.course_type}
             </span>
           </div>
           
-          <div className="flex-1 flex flex-col text-[14px]">
+          <div className="flex-1 flex flex-col text-[13px]">
             {/* Faculty Row */}
-            <div className="flex justify-between items-center py-4 border-t border-slate-100">
-              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
-                <UserIcon className="w-4 h-4" /> Faculty
+            <div className="flex justify-between items-center py-2.5 border-t border-slate-100">
+              <div className="flex items-center gap-3 text-[#868e96] font-medium w-24">
+                <UserIcon className="w-3.5 h-3.5" /> Faculty
               </div>
               <span className="font-bold text-[#1a2b4c] text-right">
                 {teacherName ? `${teacherName} (${teacherId})` : 'Loading...'}
@@ -108,20 +108,19 @@ export default function TeacherScheduleView({ entries, teacherName, teacherId }:
             </div>
 
             {/* Classroom Row */}
-            <div className="flex justify-between items-center py-4 border-t border-slate-100">
-              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
-                <MapPin className="w-4 h-4" /> Classroom
+            <div className="flex justify-between items-center py-2.5 border-t border-slate-100">
+              <div className="flex items-center gap-3 text-[#868e96] font-medium w-24">
+                <MapPin className="w-3.5 h-3.5" /> Classroom
               </div>
               <span className="font-bold text-[#d32f2f] bg-[#fff5f5] px-2 py-0.5 rounded text-right">
-                {/* Fallback to Block- if it doesn't already contain it */}
                 {activeOrNext.block_no.includes('Block') ? activeOrNext.block_no : `Block-${activeOrNext.block_no}`} / {activeOrNext.room_no}
               </span>
             </div>
             
             {/* Group Row */}
-            <div className="flex justify-between items-center py-4 border-t border-slate-100">
-              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
-                <Users className="w-4 h-4" /> Group
+            <div className="flex justify-between items-center py-2.5 border-t border-slate-100">
+              <div className="flex items-center gap-3 text-[#868e96] font-medium w-24">
+                <Users className="w-3.5 h-3.5" /> Group
               </div>
               <span className="font-bold text-[#1a2b4c] text-right">
                 {activeOrNext.student_group === 'empty' ? activeOrNext.section : `Group ${activeOrNext.student_group}`}
@@ -129,9 +128,9 @@ export default function TeacherScheduleView({ entries, teacherName, teacherId }:
             </div>
 
             {/* Section Row */}
-            <div className="flex justify-between items-center py-4 border-t border-slate-100">
-              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
-                <Hash className="w-4 h-4" /> Section
+            <div className="flex justify-between items-center py-2.5 border-t border-slate-100">
+              <div className="flex items-center gap-3 text-[#868e96] font-medium w-24">
+                <Hash className="w-3.5 h-3.5" /> Section
               </div>
               <span className="font-bold text-[#1a2b4c] text-right">
                 {activeOrNext.section}
@@ -139,9 +138,9 @@ export default function TeacherScheduleView({ entries, teacherName, teacherId }:
             </div>
             
             {/* Time Row */}
-            <div className="flex justify-between items-center py-4 border-t border-slate-100">
-              <div className="flex items-center gap-3 text-[#868e96] font-medium w-28">
-                <Clock className="w-4 h-4" /> Time
+            <div className="flex justify-between items-center py-2.5 border-t border-slate-100">
+              <div className="flex items-center gap-3 text-[#868e96] font-medium w-24">
+                <Clock className="w-3.5 h-3.5" /> Time
               </div>
               <span className="font-bold text-[#1a2b4c] text-right">
                 {activeOrNext.start_time} - {activeOrNext.end_time}
@@ -151,27 +150,27 @@ export default function TeacherScheduleView({ entries, teacherName, teacherId }:
         </div>
 
         {/* SUBTLE DIVIDER */}
-        <div className="border-t border-slate-200 border-dashed border-2"></div>
+        <div className="border-t border-slate-200 border-dashed border-2 mx-6"></div>
 
         {/* BOTTOM SECTION: Countdown */}
-        <div className="p-8 bg-slate-50/50 flex flex-col items-center">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 bg-[#fff5f5] rounded-full flex items-center justify-center text-[#d32f2f]">
-              <Clock className="w-6 h-6" />
+        <div className="p-6 bg-slate-50/50 flex flex-col items-center">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 bg-[#fff5f5] rounded-full flex items-center justify-center text-[#d32f2f]">
+              <Clock className="w-4 h-4" />
             </div>
-            <span className="text-[#868e96] font-bold text-[11px] tracking-wider uppercase">
+            <span className="text-[#868e96] font-bold text-[10px] tracking-wider uppercase">
               {isCurrent ? 'CLASS ENDS IN' : 'NEXT CLASS STARTS IN'}
             </span>
           </div>
           
-          <div className="flex items-baseline justify-center gap-3 text-[#1a2b4c] mb-2">
-            <span className="text-6xl font-black text-[#d32f2f] tracking-tighter leading-none">{formattedTime.unit1}</span>
-            <span className="text-xl font-bold text-[#868e96]">{formattedTime.label1}</span>
-            <span className="text-6xl font-black text-[#d32f2f] tracking-tighter leading-none">{formattedTime.unit2}</span>
-            <span className="text-xl font-bold text-[#868e96]">{formattedTime.label2}</span>
+          <div className="flex items-baseline justify-center gap-2 text-[#1a2b4c] mb-1">
+            <span className="text-5xl font-black text-[#d32f2f] tracking-tighter leading-none">{formattedTime.unit1}</span>
+            <span className="text-base font-bold text-[#868e96]">{formattedTime.label1}</span>
+            <span className="text-5xl font-black text-[#d32f2f] tracking-tighter leading-none">{formattedTime.unit2}</span>
+            <span className="text-base font-bold text-[#868e96]">{formattedTime.label2}</span>
           </div>
           
-          <p className="text-[#868e96] text-[13px] font-medium mt-3">
+          <p className="text-[#868e96] text-[12px] font-medium mt-2">
             {isCurrent ? 'Class is currently in progress' : 'Get ready for your next class'}
           </p>
         </div>
@@ -180,7 +179,7 @@ export default function TeacherScheduleView({ entries, teacherName, teacherId }:
   };
 
   return (
-    <div className="pb-12 grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
+    <div className="pb-12 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8">
       {/* LEFT COLUMN: Timeline */}
       <div className="flex flex-col">
         <div className="flex items-center gap-3 mb-8">
@@ -224,7 +223,7 @@ export default function TeacherScheduleView({ entries, teacherName, teacherId }:
       </div>
 
       {/* RIGHT COLUMN: Dynamic Panel */}
-      <div className="sticky top-24 h-[calc(100vh-120px)] hidden lg:block overflow-y-auto rounded-[24px]">
+      <div className="sticky top-24 h-[calc(100vh-120px)] hidden lg:block">
         {renderDynamicPanel()}
       </div>
       
