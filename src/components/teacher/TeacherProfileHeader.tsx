@@ -30,7 +30,7 @@ export default function TeacherProfileHeader({ teacher, entries = [] }: { teache
     const isCurrent = !!currentClass;
 
     return (
-      <div className="flex items-center gap-4 bg-slate-50/80 rounded-[16px] px-4 py-2 opacity-0 animate-in fade-in duration-500 fill-mode-forwards" style={{ animationDelay: '100ms' }}>
+      <div className="flex items-center gap-4 bg-slate-50/80 rounded-[16px] px-4 py-2">
         <div className="w-10 h-10 rounded-[10px] bg-white flex flex-col items-center justify-center text-[#d32f2f] border border-[#d32f2f]/10 shadow-sm shrink-0">
           <Clock className="w-5 h-5 mb-0.5" strokeWidth={2} />
         </div>
