@@ -53,7 +53,7 @@ export default async function TeacherSchedulePage({ params }: PageProps) {
         </Link>
 
         {/* Profile Card / Header */}
-        <TeacherProfileHeader teacher={teacher} />
+        <TeacherProfileHeader teacher={teacher} entries={allEntries} />
 
         {/* Two-Column Main Content */}
         <TeacherScheduleView 

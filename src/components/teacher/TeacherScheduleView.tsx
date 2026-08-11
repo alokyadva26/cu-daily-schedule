@@ -148,32 +148,6 @@ export default function TeacherScheduleView({ entries, teacherName, teacherId }:
             </div>
           </div>
         </div>
-
-        {/* SUBTLE DIVIDER */}
-        <div className="border-t border-slate-200 border-dashed border-2 mx-6"></div>
-
-        {/* BOTTOM SECTION: Countdown */}
-        <div className="p-6 bg-slate-50/50 flex flex-col items-center">
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 bg-[#fff5f5] rounded-full flex items-center justify-center text-[#d32f2f]">
-              <Clock className="w-4 h-4" />
-            </div>
-            <span className="text-[#868e96] font-bold text-[10px] tracking-wider uppercase">
-              {isCurrent ? 'CLASS ENDS IN' : 'NEXT CLASS STARTS IN'}
-            </span>
-          </div>
-          
-          <div className="flex items-baseline justify-center gap-2 text-[#1a2b4c] mb-1">
-            <span className="text-5xl font-black text-[#d32f2f] tracking-tighter leading-none">{formattedTime.unit1}</span>
-            <span className="text-base font-bold text-[#868e96]">{formattedTime.label1}</span>
-            <span className="text-5xl font-black text-[#d32f2f] tracking-tighter leading-none">{formattedTime.unit2}</span>
-            <span className="text-base font-bold text-[#868e96]">{formattedTime.label2}</span>
-          </div>
-          
-          <p className="text-[#868e96] text-[12px] font-medium mt-2">
-            {isCurrent ? 'Class is currently in progress' : 'Get ready for your next class'}
-          </p>
-        </div>
       </div>
     );
   };
